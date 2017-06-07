@@ -3,8 +3,8 @@ import socket
 import json
 
 # ホスト名
-host = socket.gethostname()
-#host = ''
+# host = socket.gethostname()
+host = 'localhost'
 # ポート番号
 port = 8000
 
