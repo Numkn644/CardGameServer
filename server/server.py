@@ -17,7 +17,8 @@ def remove_connection(con, address):
 
 def server_start():
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    sock.bind((HOST, PORT))
+    # サーバーpcが持っている全てのアドレスで接続できる
+    sock.bind(('', PORT))
     sock.listen(MAX_CLIENTS_NUM)
 
     while True:
@@ -29,7 +30,19 @@ def server_start():
 
 
 def handler(con, address):
+    f = open("../data/test.json", "r")
+    data_dict = json.load(f)
+    msg = json.dumps(data_dict)
 
+    # jsonデータを全クライアントに送信
+    try:
+        for c in clients:
+            c[0].sendto(msg.encode('utf-8'), c[1])
+            print(f'send to {c[1]}')
+    except ConnectionResetError:
+        remove_connection(con, address)
+    """
+    # 受信したメッセージを全クライアントに送信する
     while True:
         try:
             data = con.recv(4096)
@@ -40,9 +53,8 @@ def handler(con, address):
             break
         else:
             if data:
-                """print(f'Received!{address} - {json.dumps(data.decode("utf-8"))}')"""
                 print(f'Received{address} - {data.decode("utf-8")}')
-
+    """
 
 if __name__ == '__main__':
     server_start()

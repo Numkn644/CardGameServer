@@ -14,7 +14,7 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s :
     s.connect((host, port))
 
     # データの送信
-    s.sendall(b'Hello, world!')
+    # s.sendall(b'Hello, world!')
 
     # データの受信
     bytesData = s.recv(4096)
@@ -22,9 +22,9 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s :
     print(repr(bytesData))
 
     # データを文字列に変換
-    #stringData = data.decode("utf-8")
+    stringData = bytesData.decode("utf-8")
 
     # 文字列を辞書型に変換
-    #jsonData = json.loads(data)
+    jsonData = json.loads(stringData)
 
-    #print('Received : {}'.format(type(jsonData)))
+    print('Received : {}'.format(type(jsonData)))
